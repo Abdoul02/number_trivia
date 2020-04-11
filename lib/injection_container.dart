@@ -17,14 +17,6 @@ final sl = GetIt.instance; //Service locator
 
 Future<void> init() async {
   // Features - Number Trivia
-  initFeatures();
-  //Core
-  initCore();
-  //External (Http,SharedPref...etc)
-  initExternal();
-}
-
-void initFeatures() {
   //bloc
   sl.registerFactory(() =>
       NumberTriviaBloc(concrete: sl(), inputConverter: sl(), random: sl()));
@@ -43,18 +35,16 @@ void initFeatures() {
       () => NumberTriviaRemoteDataSourceImpl(client: sl()));
   sl.registerLazySingleton<NumberTriviaLocalDataSource>(
       () => NumberTriviaLocalDataSourceImpl(sharedPreferences: sl()));
-}
 
-void initCore() {
+  //Core
   //inputConverter
   sl.registerLazySingleton(() => InputConverter());
   sl.registerLazySingleton<NetworkInfo>(() => NetworkInfoImpl(sl()));
-}
 
-void initExternal() async {
+  //External (Http,SharedPref...etc)
   //Since SharedPreference is a future, we need to await but register singleton should not be awaiting
   final sharedPreference = await SharedPreferences.getInstance();
-  sl.registerLazySingleton(() => SharedPreferences);
+  sl.registerLazySingleton(() => sharedPreference);
   sl.registerLazySingleton(() => http.Client());
   sl.registerLazySingleton(() => DataConnectionChecker());
 }
