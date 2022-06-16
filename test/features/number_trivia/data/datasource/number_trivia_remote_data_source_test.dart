@@ -44,7 +44,7 @@ void main() {
         //act
         dataSource.getConcreteNumberTrivia(tNumber);
         //assert
-        verify(mockHttpClient.get('http://numbersapi.com/$tNumber',
+        verify(mockHttpClient.get(Uri.parse('http://numbersapi.com/$tNumber'),
             headers: {'content-Type': 'application/json'}));
       },
     );
@@ -86,7 +86,7 @@ void main() {
         //act
         dataSource.getRandomNumberTrivia();
         //assert
-        verify(mockHttpClient.get('http://numbersapi.com/random',
+        verify(mockHttpClient.get(Uri.parse('http://numbersapi.com/random'),
             headers: {'content-Type': 'application/json'}));
       },
     );
